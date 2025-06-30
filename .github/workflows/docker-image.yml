@@ -25,7 +25,7 @@ jobs:
     - name: Build Backend Docker image
       run: |
         BACKEND_IMAGE=ghcr.io/${{ github.repository_owner }}/backend
-        docker build ./Backend --file ./Backend/Dockerfile -t $BACKEND_IMAGE:latest
+        docker build ./Backend --file ./backend/Dockerfile -t $BACKEND_IMAGE:latest
 
     - name: Push Frontend Docker image
       run: |
