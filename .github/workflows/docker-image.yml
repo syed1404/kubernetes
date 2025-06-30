@@ -1,4 +1,4 @@
-name: Build and Push to GHCR
+name: Build and Push Frontend & Backend to GHCR
 
 on:
   push:
@@ -17,12 +17,22 @@ jobs:
     - name: Log in to GitHub Container Registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-    - name: Build Docker image
+    - name: Build Frontend Docker image
       run: |
-        IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/frontend
-        docker build ./Forntend --file ./Forntend/Dockerfile -t $IMAGE_NAME:latest
+        FRONTEND_IMAGE=ghcr.io/${{ github.repository_owner }}/frontend
+        docker build ./Forntend --file ./Forntend/Dockerfile -t $FRONTEND_IMAGE:latest
 
-    - name: Push Docker image
+    - name: Build Backend Docker image
       run: |
-        IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/frontend
-        docker push $IMAGE_NAME:latest
+        BACKEND_IMAGE=ghcr.io/${{ github.repository_owner }}/backend
+        docker build ./Backend --file ./Backend/Dockerfile -t $BACKEND_IMAGE:latest
+
+    - name: Push Frontend Docker image
+      run: |
+        FRONTEND_IMAGE=ghcr.io/${{ github.repository_owner }}/frontend
+        docker push $FRONTEND_IMAGE:latest
+
+    - name: Push Backend Docker image
+      run: |
+        BACKEND_IMAGE=ghcr.io/${{ github.repository_owner }}/backend
+        docker push $BACKEND_IMAGE:latest
